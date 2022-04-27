@@ -22,10 +22,16 @@ import {Gender, Popularity, Length, names} from "@/data"
       else return name.length === options.length
     })
 
-    selectedNames.value = filteredNames.map(name => name.name)
-  }
+    selectedNames.value = filteredNames.map(name => name.name);
+  };
 
   const selectedNames = ref<string[]>([]);
+
+  const removeName = (index: number) => {
+    const filteredNames = [...selectedNames.value]
+    filteredNames.splice(index, 1)
+    selectedNames.value = filteredNames
+  }
 
   const optionsArray = [
     {
@@ -61,10 +67,7 @@ import {Gender, Popularity, Length, names} from "@/data"
       <button @click="computeSelectedNames()" class="primary">Find Names</button>
     </div>
     <div class="cards-container">
-      <div v-for="name in selectedNames" :key="name" class="card">
-        <h4>{{ name }}</h4>
-        <p>X</p>
-      </div>
+      <CardName v-for="(name, index) in selectedNames" :key="name" :name="name" @remove="() => removeName(index)" :index="index"/>
     </div>
   </div>
 </template>
